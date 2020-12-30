@@ -7,14 +7,19 @@ on:
     branches: [ master ]
 
 jobs:
-  build-lib:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Build C++ Library
-        uses: lukka/run-cmake@main
+        uses: lukka/run-cmake@v3.2
         with:
           buildDirectory: '${{ github.workspace }}/build/'
           cmakeListsTxtPath: '${{ github.workspace }}/srcs/CMakeLists.txt'
       - name: "Check files"
         run: ls -lisa build/lib
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: "libheifjni.so"
+          path: build/lib/libheifjni.so
